@@ -4,6 +4,7 @@
     "rules": {
         "prettier/prettier": "error",
         "import/no-useless-path-segments": "off",
+        "node/no-unsupported-features/es-syntax": "off",
         "spaced-comment": "off",
         "no-console": "warn",
         "consistent-return": "off",
