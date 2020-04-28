@@ -3,6 +3,12 @@ const dotenv = require('dotenv');
 
 dotenv.config({ path: './config.env' });
 
+process.on('uncaughtException', err => {
+    console.log('UNCAUGHT EXCEPTION! Shutting down...');
+    console.log(err.name, err.message);
+    process.exit(1);
+});
+
 const DB = process.env.DATABASE.replace(
     '<PASSWORD>',
     process.env.DATABASE_PASSWORD
@@ -36,6 +42,14 @@ const app = require(`${__dirname}/app`);
 
 const port = process.env.PORT || 9910;
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log(`app running on port ${port}...`);
+});
+
+process.on('unhandledRejection', err => {
+    console.log('UNHANDLED REJECTION! Shutting down...');
+    console.log(err);
+    server.close(() => {
+        process.exit(1);
+    });
 });
